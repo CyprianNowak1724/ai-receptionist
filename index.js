@@ -23,6 +23,21 @@ const salon = {
     ],
 };
 
+const appointments = [
+    {
+      date: "dzisiaj",
+      time: "09:00",
+    },
+    {
+      date: "dzisiaj",
+      time: "10:00",
+    },
+    {
+      date: "jutro",
+      time: "12:00",
+    },
+];
+
 const OpenAI = require("openai");
 
 const client = new OpenAI();
@@ -30,8 +45,14 @@ const client = new OpenAI();
 function checkAvailability(date, time) {
     console.log(`Sprawdzam dostępność: ${date} o ${time}`);
   
+    const isBusy = appointments.some(
+      (appointment) =>
+        appointment.date === date &&
+        appointment.time === time
+    );
+  
     return {
-      available: true,
+      available: !isBusy,
       date: date,
       time: time,
     };
@@ -54,7 +75,7 @@ async function main() {
             Odpowiadaj klientom na pytania dotyczące salonu.
             Nie wymyślaj informacji, których nie masz.
 
-            Klient pyta: "Czy mogę umówić się dzisiaj na 09:00 na strzyżenie?"
+            Klient pyta: "Czy mogę umówić się dzisiaj na 09:30 na strzyżenie?"
 
             Jeżeli sprawdzenie dostępności zwróci, że termin jest dostępny,
             poinformuj klienta, że termin jest wolny.
